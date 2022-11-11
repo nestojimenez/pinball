@@ -1,0 +1,145 @@
+<div id="back" style="
+z-index:5;
+position:absolute;
+left:0px;
+top:0px;
+width:650;
+height:450px;
+background: burlywood;"
+></div>
+
+<div id="sqr" style="
+z-index:5;
+position:absolute;
+left:0px;
+top:0px;
+width:50px;
+height:100px;
+background: rgb(34, 33, 33);"
+></div>
+
+<div id="ball" style="
+  z-index:5;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:green"></div>
+
+<script>
+
+var velocity = 1;
+var position = 0;
+var positionTop = 0;
+var velocityTop = 1;
+var ball = document.getElementById('ball');
+var leftRight = true;
+var topBottom = true;
+var circleEdges = [];
+var rectEdges = [];
+var rectUpperCorners =[];
+var rectBorders = [];
+
+const myBack = document.getElementById('back');
+const myRect = document.getElementById('sqr');
+
+myBack.addEventListener("click", getClickPosition, false);
+
+function getClickPosition(e) {
+    rectBorders = [];
+    var xPosition = e.clientX;
+    var yPosition = e.clientY;
+    //alert(xPosition + " " + yPosition);
+    myRect.style.left = xPosition;
+    myRect.style.top = yPosition;
+    rectEdges = [parseInt(xPosition) , parseInt(xPosition) + (parseInt(myRect.style.width))];
+    rectUpperCorners = [parseInt(myRect.style.top),parseInt(myRect.style.top)]
+    
+    for(let i = 0; i < parseInt(myRect.style.height); i++){
+      rectBorders.push([[rectEdges[1], rectUpperCorners[0] + i ], [rectEdges[0], rectUpperCorners[0] + i ]])
+    }
+
+    //console.log(rectBorders);
+
+  
+     
+}
+
+// YOUR CODE 
+// ----------------
+/*const myFun= () => {
+  if(position < 1500){
+    position = position + velocity;
+    ball.style.left = position + "px";
+    
+  }else{
+    position = 0;
+    ball.style.left = position;
+    if(positionTop<800){
+      positionTop = positionTop + 50;
+      ball.style.top = positionTop;
+    }else{
+      positionTop = 0;
+      ball.style.top = positionTop;
+    }
+  }
+}*/
+
+const myFun= () => {
+  
+  
+
+  
+  
+
+  if(leftRight === true){
+    position = position + velocity;
+    ball.style.left = position + "px";
+    if(position > 600){
+      leftRight = false;
+    }
+  }else if(leftRight===false){
+    position = position - velocity;
+    ball.style.left = position + "px";
+    if(position < 50){
+      leftRight=true;
+    }
+  }
+
+  if(topBottom === true){
+    positionTop = positionTop + velocityTop;
+    ball.style.top = positionTop + "px";
+    if(positionTop > 400){
+      topBottom = false;
+    }
+  }else if(topBottom===false){
+    positionTop = positionTop - velocityTop;
+    ball.style.top = positionTop + "px";
+    if(positionTop < 50){
+      topBottom=true;
+    }
+  }
+
+  circleEdges = [[position , positionTop + (parseInt(ball.style.height)/2)], [position + parseInt(ball.style.width), positionTop +(parseInt(ball.style.height)/2)]];
+  for(let i = 0; i < 2; i++){
+    for(let x=0; x< parseInt(myRect.style.height); x++){
+      if(JSON.stringify(circleEdges[i])  === JSON.stringify(rectBorders[x][i]) ){
+        console.log(circleEdges[i]);
+        console.log(rectBorders[x][i]);
+        //alert("Collision");
+        leftRight = !leftRight;
+      }
+      //console.log(rectBorders[x][i]);
+      
+    }
+    
+  }
+  
+}
+
+setInterval(myFun, 10)
+  
+
+</script>
